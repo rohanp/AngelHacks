@@ -3,7 +3,7 @@ var x = document.getElementById("demo");
 
 function getLocation() {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition, handleLocationError, {timeout: 10000});
+        navigator.geolocation.watchPosition(showPosition, handleLocationError, {timeout: 1000});
 
     } else {
         x.innerHTML = "Geolocation is not supported by this browser.";
