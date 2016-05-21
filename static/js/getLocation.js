@@ -1,41 +1,30 @@
+var watchID;
+var geoLoc;
 var x = document.getElementById("demo");
 
+function showLocation(position) {
+  var latitude = position.coords.latitude;
+  var longitude = position.coords.longitude;
+  x.innerHTML = "Latitude : " + latitude + " Longitude: " + longitude;
+}
+
+function errorHandler(err) {
+  if (err.code == 1) {
+    alert("Error: Access is denied!");
+  } else if (err.code == 2) {
+    alert("Error: Position is unavailable!");
+  }
+}
 
 function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.watchPosition(showPosition, handleLocationError, {timeout: 1000});
-
-    } else {
-        x.innerHTML = "Geolocation is not supported by this browser.";
-    }
-}
-
-function showPosition(position) {
-    var xcoord = [];
-    var ycoord = [];
-
-    xcoord.push(position.coords.latitude);
-    ycoord.push(position.coords.longitude);
-
-    x.innerHTML = "Latitude: " + xcoord +
-    "<br>Longitude: " + ycoord;
-}
-
-function handleLocationError(error) {
-  switch(error.code){
-  case 0:
-    updateStatus("There was an error while retrieving your location: " +
-                                 error.message);
-  break;
-  case 1:
-  updateStatus("The user prevented this page from retrieving a location.");
-  break;
-  case 2:
-  updateStatus("The browser was unable to determine your location: " +
-                               error.message);
-  break;
-  case 3:
-  updateStatus("The browser timed out before retrieving the location.");
-  break;
+  if (navigator.geolocation) {
+    // timeout at 60000 milliseconds (60 seconds)
+    var options = {
+      timeout: 60000
+    };
+    geoLoc = navigator.geolocation;
+    watchID = geoLoc.watchPosition(showLocation, errorHandler, options);
+  } else {
+    alert("Sorry, browser does not support geolocation!");
   }
 }
