@@ -32,6 +32,8 @@ function updateLocation(email){
 
   getLocation(function(position){
 
+      console.log(position.coords)
+
       $.ajax({
         type: "POST",
         url: '/updateLocation',

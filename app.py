@@ -5,7 +5,29 @@ from functools import wraps
 
 app = Flask(__name__)
 
-user_db = {}
+user_db = {'pandit.rohan@gmail.com': {
+										'name': 'Rohan',
+										'password': 'helo',
+										'latitude': 30,
+										'longitude': 50
+									 },
+			'ayylmao@gmail.com': {
+									'name': 'John',
+									'password': 'helo',
+									'latitude': 31,
+									'longitude':51
+								 },
+
+			'helo@gmail.com': {
+								'name': 'Dat boi',
+								'password': 'helo',
+								'latitude': 32.5,
+								'longitude':52.5
+
+							  }
+
+		  }
+
 app.secret_key = secret_key
 
 def login_required(test):
@@ -94,6 +116,8 @@ def request_food():
 
 	closest_user = min(user_db.keys(), key=find_dist)
 
+	print("closest user is ", closest_user)
+
 	flash("Worry not, food is on the way!")
 
 	redirect(url_for('home'))
@@ -110,6 +134,7 @@ def update_location():
 	user_db[email]['longitude'] = float(request.form['longitude'])
 
 	print("updated location for {email}".format(**locals()))
+	print("new location is ", user_db[email]['latitude'], user_db[email]['longitude'])
 
 	redirect(url_for('home'))
 
