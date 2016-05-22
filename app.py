@@ -10,6 +10,7 @@ user_db = {'pandit.rohan@gmail.com': {
 										'password': 'helo',
 										'latitude': 30,
 										'longitude': 50
+										'grocery_list': []
 									 },
 			'ayylmao@gmail.com': {
 									'name': 'John',
