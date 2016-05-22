@@ -9,22 +9,23 @@ user_db = {'pandit.rohan@gmail.com': {
 										'name': 'Rohan',
 										'password': 'helo',
 										'latitude': 30,
-										'longitude': 50
-										'grocery_list': []
+										'longitude': 50,
+										'grocery_list': ['candy', 'chocolate']
 									 },
 			'ayylmao@gmail.com': {
 									'name': 'John',
 									'password': 'helo',
 									'latitude': 31,
-									'longitude':51
+									'longitude':51,
+									'grocery_list': ['garlic bread']
 								 },
 
 			'helo@gmail.com': {
 								'name': 'Dat boi',
 								'password': 'helo',
 								'latitude': 32.5,
-								'longitude':52.5
-
+								'longitude':52.5,
+								'grocery_list': []
 							  }
 
 		  }
@@ -99,7 +100,13 @@ def logout():
 @app.route("/home")
 @login_required
 def home():
-	return render_template("pages/home.html", email=session['email'])
+
+	email = session['email']
+	grocery_list = user_db[email]['grocery_list']
+
+
+	return render_template("pages/home.html", email=email,
+											  grocery_list=grocery_list)
 
 
 @app.route("/requestFood", methods=['POST'])

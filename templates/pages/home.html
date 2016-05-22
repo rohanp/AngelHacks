@@ -12,9 +12,12 @@
 
 <ul>
 Grocery List:
-<li> blah blah </li>
-<li> blah blah blah</li>
 
+{% for item in grocery_list %}
+
+	<li> {{ item }} </li>
+
+{% endfor %}
 
 </ul>
 
