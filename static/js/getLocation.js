@@ -2,24 +2,49 @@ var watchID;
 var geoLoc;
 var x = document.getElementById("demo");
 
+
 function showLocation(position) {
   var latitude = position.coords.latitude;
   var longitude = position.coords.longitude;
   x.innerHTML = "Latitude : " + latitude + " Longitude: " + longitude;
-
-  sendData(position)
 }
 
-function sendData(position){
+function requestFood(email){
 
-   $.ajax({
-    type: "POST",
-    url: '/sendData',
-    data: position.coords,
-    success: function(){
-      console.log("sent successfully!")
-    },
-  });
+    getLocation(function(position){
+
+      $.ajax({
+        type: "POST",
+        url: '/requestFood',
+        data: {'email': email,
+               'longitude': position.coords.longitude,
+               'latitude': position.coords.latitude
+             },
+        success: function(){
+          console.log("requested food successfully!")
+        },
+      });
+
+    })  
+}
+
+function updateLocation(email){
+
+  getLocation(function(position){
+
+      $.ajax({
+        type: "POST",
+        url: '/updateLocation',
+        data: {'email': email,
+               'longitude': position.coords.longitude,
+               'latitude': position.coords.latitude
+             },
+        success: function(){
+          console.log("sent location successfully!")
+        },
+      });
+
+    }) 
 }
 
 function errorHandler(err) {
@@ -30,14 +55,11 @@ function errorHandler(err) {
   }
 }
 
-function getLocation() {
+function getLocation(callback) {
   if (navigator.geolocation) {
-    // timeout at 60000 milliseconds (60 seconds)
-    var options = {
-      timeout: 60000
-    };
+    var options = {}
     geoLoc = navigator.geolocation;
-    watchID = geoLoc.watchPosition(showLocation, errorHandler, options);
+    watchID = geoLoc.watchPosition(callback, errorHandler, options);
   } else {
     alert("Sorry, browser does not support geolocation!");
   }

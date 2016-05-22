@@ -34,10 +34,12 @@
 
 					<a class="navbar-brand" href="/">
 						<img style="max-height:55px; margin-top:-15px; " src="static/icon.png"> </img>
+
+						<!-- Icon made by Madebyoliver  --> 
 					</a>
 
 
-					<a class="navbar-brand" href="/">
+					<a class="navbar-brand" href="/home">
 						<span class="logo_colour"> Cilantro </span>
 					</a>
 
@@ -68,6 +70,8 @@
 		<!-- Begin page content -->
 		<main id="content" role="main" class="container">
 
+			{% block content %}{% endblock %}
+
 			{% with messages = get_flashed_messages() %}
 				{% if messages %}
 					{% for message in messages %}
@@ -81,15 +85,13 @@
 				{% endif %}
 			{% endwith %}
 
-			{% block content %}{% endblock %}
-
 		</main>
 
 	</div>
 
 	<footer class="footer">
 		<div class="container">
-			<p class="text-muted">&copy; 2016 Ayy Lmao Inc. All Rights Reserved.</p>
+			<p class="text-muted">&copy; 2016 Ayy Lmao Inc. All Rights Reserved. Icon made by Madebyoliver </p>
 			{% block footer %}{% endblock %}
 		</div>
 	</footer>
@@ -99,6 +101,12 @@
 	<script src="/static/js/flat-ui-2.2.2.min.js"></script>
 	<script src="/static/js/bootstrap-3.3.5.min.js" defer></script>
 	<script src="/static/js/getLocation.js"></script>
+	<script>
+
+	updateLocation('{{email}}')
+	setTimeout(updateLocation, 60000)
+
+	</script>
 
 </body>
 </html>

@@ -39,6 +39,7 @@ def login():
 		else:
 			name = user_db[email]['name']
 			session['name'] = name
+			session['email'] = email
 			flash(u'Hi {0}!'.format(name))
 
 			return redirect(url_for('home'))
@@ -58,6 +59,7 @@ def register():
 		user_db[email] = {'name': name, 'password': password}
 
 		session['name'] = name
+		session['email'] = email
 		flash(u'Hi {0}!'.format(session['name']))
 
 		print(user_db)
@@ -74,17 +76,46 @@ def logout():
 @app.route("/home")
 @login_required
 def home():
-	return render_template("pages/index.html")
+	return render_template("pages/home.html", email=session['email'])
 
 
-@app.route("/sendData", methods=['POST'])
-def send_data():
+@app.route("/requestFood", methods=['POST'])
+@login_required
+def request_food():
 
-	print(request.form['latitude'])
-	redirect(url_for('index'))
+	x1 = float(request.form['latitude'])
+	y1 = float(request.form['longitude'])
+
+	def find_dist(user):
+		x2 = user_db[user]['longitude']
+		y2 = user_db[user]['longitude']
+
+		return (x2 - x1)**2 - (y2 - y1)**2
+
+	closest_user = min(user_db.keys(), key=find_dist)
+
+	flash("Worry not, food is on the way!")
+
+	redirect(url_for('home'))
+
+	return render_template("layouts/main.html")
+
+@app.route("/updateLocation", methods=['POST'])
+@login_required
+def update_location():
+
+	email = request.form['email']
+	
+	user_db[email]['latitude'] = float(request.form['latitude'])
+	user_db[email]['longitude'] = float(request.form['longitude'])
+
+	print("updated location for {email}".format(**locals()))
+
+	redirect(url_for('home'))
 
 	return render_template("layouts/main.html")
 
 
 if __name__ == "__main__":
 	app.run(debug=True)
+
