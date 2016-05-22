@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html> 
+	<title>{{user.name}}'s Groceries</title>
+	<body>
+		<!-- NEED TO INCLUDE JS FILE TO CALCULATE NEAREST USER -->
+		<h2>Closest User : </h2> 
+		<!--                                                   -->
+		<ul>
+			<li> Grocery List </li>
+			{% for item in myList %}
+			<li>  {{ item.name }} &nbsp; {{ item.price }}  </li>
+			{% endfor %}
+		</ul>
+	</body>
+</html>
