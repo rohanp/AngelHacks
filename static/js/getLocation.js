@@ -25,7 +25,7 @@ function requestFood(email){
         },
       });
 
-    })  
+    })
 }
 
 function updateLocation(email){
@@ -46,12 +46,12 @@ function updateLocation(email){
         },
       });
 
-    }) 
+    })
 }
 
 function errorHandler(err) {
   if (err.code == 1) {
-    alert("Error: Access is denied!");
+    alert("Location Error");
   } else if (err.code == 2) {
     alert("Error: Position is unavailable!");
   }

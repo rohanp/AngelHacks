@@ -1,9 +1,11 @@
 from flask import Flask, render_template, request, flash,\
 					 session, redirect, url_for
-from secret_key import secret_key 
+from secret_key import secret_key
 from functools import wraps
+from flask_sslify import SSLify
 
 app = Flask(__name__)
+sslify = SSLify(app)
 
 user_db = {'pandit.rohan@gmail.com': {
 										'name': 'Rohan',
@@ -44,7 +46,7 @@ def login_required(test):
 
 @app.route("/")
 def index():
-	return render_template("pages/index.html") 
+	return render_template("pages/index.html")
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -79,8 +81,11 @@ def register():
 		email = request.form['email']
 		name = request.form['name']
 		password = request.form['password']
-          
-		user_db[email] = {'name': name, 'password': password}
+
+		user_db[email] = {'name': name,
+						  'password': password,
+						  'grocery_list': []
+						  }
 
 		session['name'] = name
 		session['email'] = email
@@ -113,16 +118,19 @@ def home():
 @login_required
 def request_food():
 
+	current_user = session['email']
+	print(current_user)
+
 	x1 = float(request.form['latitude'])
 	y1 = float(request.form['longitude'])
 
 	def find_dist(user):
-		x2 = user_db[user]['longitude']
+		x2 = user_db[user]['latitude']
 		y2 = user_db[user]['longitude']
 
 		return (x2 - x1)**2 - (y2 - y1)**2
 
-	closest_user = min(user_db.keys(), key=find_dist)
+	closest_user = min(user_db.keys() - [current_user], key=find_dist)
 
 	print("closest user is ", closest_user)
 
@@ -137,7 +145,7 @@ def request_food():
 def update_location():
 
 	email = request.form['email']
-	
+
 	user_db[email]['latitude'] = float(request.form['latitude'])
 	user_db[email]['longitude'] = float(request.form['longitude'])
 
@@ -151,4 +159,3 @@ def update_location():
 
 if __name__ == "__main__":
 	app.run(debug=True)
-

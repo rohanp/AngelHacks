@@ -3,14 +3,20 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
+<br><br><br><br><br><br><br><br>
 <form action="" method="post">
-    <input type="text" placeholder="Email" name="email" value="{{request.form.email}}">
-    <input type="password" placeholder="Password" name="password" value="{{request.form.password }}">
-    <input class="btn btn-default" type="submit" value="Login">
+    <center>
+    <input style="text-align: center" type="text" placeholder="Email" name="email" value="{{request.form.email}}">
+    <br>
+    <input style="text-align: center"  type="password" placeholder="Password" name="password" value="{{request.form.password }}">
+    <br>
+    <input style="margin-top:10px" type="submit" value="Submit" class="btn btn-primary">
       {% if error %}
         <p class="error"><strong>Error:</strong> {{ error }}
       {% endif %}
-    <input type="submit" value="Submit" class="btn btn-primary btn-lg btn-block">
+
+  </center>
+
  </form>
 
 <p class="text-center"><a href="{{ url_for('register') }}">Don't have an account?</a></p>
