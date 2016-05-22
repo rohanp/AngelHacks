@@ -1,15 +1,59 @@
 {% extends 'layouts/main.html' %}
-{% block title %}Home{% endblock %}
+
+{% block title %}Cilantro{% endblock %}
 {% block content %}
 
+<head>
+  <title></title>
 
-<p>Click the button to get your coordinates.</p>
+  <link rel="stylesheet" type="/static/css/style.css" href="style/style.css" />
+</head>
 
-<button onclick="getLocation()">I want food</button>
-
-<p id="demo"></p>
+  <div id="main">
+    <div id="header">
+      <div id="logo">
+        <div id="logo_text">
+          <!-- class="logo_colour", allows you to change the colour of the text -->
+          <h1><a href="index.html"><span class="logo_colour">Cilantro</span></a></h1>
+          <h2>Crowdsourcing everyday errands</h2>
+        </div>
+      </div>
+      <div id="menubar">
+        <ul id="menu">
+          <!-- put class="selected" in the li tag for the selected page - to highlight which page you're on -->
+          <li class="selected"><a href="index.html">Home</a></li>
+          <li><a href="page.html">Order</a></li>
+          <li><a href="another_page.html">Deliver</a></li>
+        </ul>
+      </div>
+    </div>
+    <div id="content_header"></div>
+    <div id="site_content">
+      <div id="sidebar_container">
+        <div class="sidebar">
+          <div class="sidebar_top"></div>
+          <div class="sidebar_item">
+            <!-- insert your sidebar items here -->
+         
+         
+          <div class="sidebar_base"></div>
+        </div>
+      </div>
+      <div id="content">
+        <!-- insert the page content here -->
+        <h1>Introducing crowdsourcing groceries</h1>
+        <h3>Our Mission</h3>
+        <p>Cilantro is all about convenience. Let's say it's Friday night and you have a hankering for some sizzling stir fry. You could go to the store yourself, but that costs time and your favorite show just came on :( . You could order online... if you want to wait three days for that stir fry. OR you could just ask Alexa to open up Cilantro!</p>
+        <h3>How it works</h3>
+        <p> Using Amazon Echo, you can add all of your groceries to a list through Cilantro. Once you've added  all of the items you need, all you have to do is publish your list, and let us do the rest. Cilantro will find the closest prospective driver to you and send them the items that you need. Then the drive can grab those items on the go and deliver them right to your door! Alternatively, if you are looking to pick up some quick cash, you can sign up to be a driver and get paid just to go grocery shopping!</p>
+        
+       
+      </div>
+    </div>
+    <div id="content_footer"></div>
+    <div id="footer">
+     
+    </div>
+  </div>
 
 {% endblock %}
-
-
-
