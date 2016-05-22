@@ -1,0 +1,37 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Open Requests{% endblock %}
+{% block content %}
+
+<br>
+
+<ul>
+
+<table style="width:100%">
+
+	<tr>
+    <th>Request</th>
+    <th>Price</th>
+    <th></th>
+  </tr>
+
+	{% for (item, price, user) in open_requests_list %}
+
+		<tr style="margin-bottom:50px">
+			<td> {{ item }} </td>
+			<td> {{ price }} </td>
+			<td> <a href="fullfillRequest?user={{ user }}?request={{ item }}">
+				<div class="btn btn-primary"> Fulfill Request </div>
+			</a>
+			</td>
+		</tr>
+
+	{% endfor %}
+
+</table>
+
+
+
+
+</ul>
+
+{% endblock %}
