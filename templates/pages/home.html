@@ -2,25 +2,25 @@
 {% block title %}Home{% endblock %}
 {% block content %}
 
-<p>Click the button to get your groceries delivered.</p>
+<br>
 
-<button onclick="requestFood('{{email}}')">I want food</button>
+<div class="btn btn-info" onclick="requestFood('{{email}}')">I want stuff</div>
+<a href="{{ url_for('open_requests') }}">
+	<div style="margin-left:10px"class="btn btn-info">I want money</div>
+</a>
 
 <p id="demo">
 </p>
 
 <ul>
-Grocery List:
+Request List:
 
-{% for item in grocery_list %}
+{% for (item, price) in request_list %}
 
-	<li> {{ item }} </li>
+	<li> {{ item, price }} </li>
 
 {% endfor %}
 
 </ul>
 
 {% endblock %}
-
-
-

@@ -2,24 +2,25 @@ from flask import Flask, render_template, request, flash,\
 					 session, redirect, url_for
 from secret_key import secret_key
 from functools import wraps
-from flask_sslify import SSLify
+#from flask_sslify import SSLify
 
 app = Flask(__name__)
-sslify = SSLify(app)
+
 
 user_db = {'pandit.rohan@gmail.com': {
 										'name': 'Rohan',
 										'password': 'helo',
 										'latitude': 30,
 										'longitude': 50,
-										'grocery_list': ['candy', 'chocolate']
+										'request_list': [('Get me a burger', '$10'),
+														 ('Get me grapes', '$2')]
 									 },
 			'ayylmao@gmail.com': {
 									'name': 'John',
 									'password': 'helo',
 									'latitude': 31,
 									'longitude':51,
-									'grocery_list': ['garlic bread']
+									'request_list': [('Solve the Riemann Hypothesis', '$1,000,000')]
 								 },
 
 			'helo@gmail.com': {
@@ -27,7 +28,7 @@ user_db = {'pandit.rohan@gmail.com': {
 								'password': 'helo',
 								'latitude': 32.5,
 								'longitude':52.5,
-								'grocery_list': []
+								'request_list': []
 							  }
 
 		  }
@@ -84,7 +85,7 @@ def register():
 
 		user_db[email] = {'name': name,
 						  'password': password,
-						  'grocery_list': []
+						  'request_list': []
 						  }
 
 		session['name'] = name
@@ -107,11 +108,11 @@ def logout():
 def home():
 
 	email = session['email']
-	grocery_list = user_db[email]['grocery_list']
+	request_list = user_db[email]['request_list']
 
 
 	return render_template("pages/home.html", email=email,
-											  grocery_list=grocery_list)
+											  request_list=request_list)
 
 
 @app.route("/requestFood", methods=['POST'])
@@ -144,7 +145,7 @@ def request_food():
 @login_required
 def update_location():
 
-	email = request.form['email']
+	email = session['email']
 
 	user_db[email]['latitude'] = float(request.form['latitude'])
 	user_db[email]['longitude'] = float(request.form['longitude'])
@@ -156,6 +157,25 @@ def update_location():
 
 	return render_template("layouts/main.html")
 
+@app.route('/openRequests')
+@login_required
+def open_requests():
+
+	open_requests_list = []
+
+	for user, data in user_db.items():
+		for request in data['request_list']:
+			open_requests_list.append((request[0], request[1], user))
+
+	return render_template("pages/openRequests.html",
+						    open_requests_list=open_requests_list)
+
+"""
+@app.route('/fulfillRequest')
+@login_required
+def fullfill_request():
+	return render_template("layout/main")
+"""
 
 if __name__ == "__main__":
 	app.run(debug=True)
