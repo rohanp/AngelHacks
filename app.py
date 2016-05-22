@@ -1,10 +1,12 @@
 from flask import Flask, render_template, request, flash,\
 					 session, redirect, url_for
+from secret_key import secret_key 
+from functools import wraps
 
 app = Flask(__name__)
 
 user_db = {}
-salt = "helo"
+app.secret_key = secret_key
 
 def login_required(test):
 	@wraps(test)
@@ -17,23 +19,27 @@ def login_required(test):
 	return wrap
 
 @app.route("/")
-def info():
+def index():
 	return render_template("pages/index.html") 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 
-	form = LoginForm(request.form)
-
 	if request.method == 'GET':
-		return render_template('pages/login.html', form=form)
+		return render_template('pages/login.html',)
 
 	if request.method == 'POST':
-		if form.validate() == False:
-			return render_template('pages/login.html', form=form)
+
+		email = request.form['email']
+		password = request.form['password']
+
+		if user_db[email]['password'] != password:
+			flash("Wrong password :o(")
+			return render_template('pages/login.html')
 		else:
-			session['name'] = form.name.data.lower()
-			flash(u'Hi {0}!')
+			name = user_db[email]['name']
+			session['name'] = name
+			flash(u'Hi {0}!'.format(name))
 
 			return redirect(url_for('home'))
 
@@ -41,22 +47,33 @@ def login():
 def register():
 
 	if request.method == 'GET':
-		return render_template('forms/register.html', form=form)
+		return render_template('pages/register.html')
 
 	elif request.method == 'POST':
-		if form.validate() == False:
-			return render_template('pages/register.html', form=RegisterForm())
-		else:            
-			user_db[form.email.data] = form.password.data
 
-			session['name'] = newuser.name
-			flash(u'Successfully Registered')
+		email = request.form['email']
+		name = request.form['name']
+		password = request.form['password']
+          
+		user_db[email] = {'name': name, 'password': password}
 
-			return redirect(url_for('home'))
+		session['name'] = name
+		flash(u'Hi {0}!'.format(session['name']))
+
+		print(user_db)
+		return redirect(url_for('home'))
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    session.pop('name', None)
+    return redirect(url_for('index'))
 
 
 @app.route("/home")
-def index():
+@login_required
+def home():
 	return render_template("pages/index.html")
 
 
